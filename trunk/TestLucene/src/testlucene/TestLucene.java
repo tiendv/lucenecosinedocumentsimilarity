@@ -19,7 +19,7 @@ public class TestLucene {
      */
     public static void main(String[] args) {
         try {
-            CosineDocumentSimilarity test = new CosineDocumentSimilarity("I have car", "you have test");
+            CosineDocumentSimilarity test = new CosineDocumentSimilarity("I have car", "you have bus");
             double result =test.getCosineSimilarity();
             
             System.out.println(result);
