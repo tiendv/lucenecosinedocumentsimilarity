@@ -5,6 +5,7 @@
 package testlucene;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +20,22 @@ public class TestLucene {
      */
     public static void main(String[] args) {
         try {
-            CosineDocumentSimilarity test = new CosineDocumentSimilarity("I have car", "you have bus");
-            double result =test.getCosineSimilarity();
-            
-            System.out.println(result);
+            ArrayList result = new ArrayList();
+            ArrayList listAuthor = LoadData.loadTextFromFile("C:\\Data\\");
+            for(int i=0 ; i< listAuthor.size();i++)
+            {
+                for(int j=i+1; j<listAuthor.size();j++)
+                {
+                    CosineDocumentSimilarity cosinSmilar = new CosineDocumentSimilarity (listAuthor.get(i).toString(),listAuthor.get(j).toString());
+                     result.add(cosinSmilar.getCosineSimilarity());
+                }
+               
+                
+            }
+            for(int j =0; j< result.size();j++)
+            {
+                System.out.println(result.get(j).toString());
+            }
         } catch (IOException ex) {
             Logger.getLogger(TestLucene.class.getName()).log(Level.SEVERE, null, ex);
         }
