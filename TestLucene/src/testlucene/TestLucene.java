@@ -6,6 +6,7 @@ package testlucene;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,22 +21,24 @@ public class TestLucene {
      */
     public static void main(String[] args) {
         try {
-            ArrayList result = new ArrayList();
-            ArrayList listAuthor = LoadData.loadTextFromFile("C:\\Data\\");
+            double result;;
+            Map listAuthor = LoadData.loadFileFromForder("C:\\Data\\");
             for(int i=0 ; i< listAuthor.size();i++)
-            {
+            {             
+                Author authorOne = (Author) listAuthor.get(i);
                 for(int j=i+1; j<listAuthor.size();j++)
-                {
-                    CosineDocumentSimilarity cosinSmilar = new CosineDocumentSimilarity (listAuthor.get(i).toString(),listAuthor.get(j).toString());
-                     result.add(cosinSmilar.getCosineSimilarity());
+                    
+                {    
+                    Author authorTwo = (Author) listAuthor.get(j);
+                    CosineDocumentSimilarity cosinSmilar = new CosineDocumentSimilarity (authorOne.paperContent,authorTwo.paperContent);
+                    result = cosinSmilar.getCosineSimilarity();   
+                    System.out.println(" Cosin similarity of Author"+ authorOne.getName()+"and"+ authorTwo.getName()+":"+result);
+                     
                 }
                
                 
             }
-            for(int j =0; j< result.size();j++)
-            {
-                System.out.println(result.get(j).toString());
-            }
+            
         } catch (IOException ex) {
             Logger.getLogger(TestLucene.class.getName()).log(Level.SEVERE, null, ex);
         }
