@@ -1,3 +1,4 @@
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -7,6 +8,8 @@ package testlucene;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +22,16 @@ import java.util.logging.Logger;
  */
 public class LoadData 
 { 
-    public static ArrayList loadTextFromFile (String rootPath) throws FileNotFoundException, IOException
+    public static Map<Integer,Author> loadFileFromForder (String rootPath) throws FileNotFoundException, IOException
     {
-        ArrayList result = new ArrayList();
+        Map<Integer, Author> result = new HashMap<Integer,Author>();
+        
         File mainFolder = new File(rootPath);
-       
             System.out.println(mainFolder.getAbsolutePath());
             File[] subFolderList = mainFolder.listFiles();
             for (int i = 0; i < subFolderList.length; i++) {
-                    result.add(i, readFile(subFolderList[i]));
-                
+                Author temp = new Author(subFolderList[i].getName(), readFile(subFolderList[i]));
+                    result.put(i, temp); 
             }
         return result;
     }
