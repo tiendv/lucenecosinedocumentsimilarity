@@ -183,7 +183,7 @@ public class DocumentSimilarityTFIDF {
             else {
                 value = 0;
             }
-            vector.setEntry(i++, value);
+            vector.setEntry(i++, value);   
         }
         return vector;
     }
