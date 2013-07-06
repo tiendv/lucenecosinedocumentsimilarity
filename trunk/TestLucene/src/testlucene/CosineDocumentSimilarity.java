@@ -28,13 +28,22 @@ public class CosineDocumentSimilarity {
     private final RealVector v2;
 
     CosineDocumentSimilarity(String s1, String s2) throws IOException {
-        Directory directory = createIndex(s1, s2);
-        IndexReader reader = DirectoryReader.open(directory);
-        Map<String, Integer> f1 = getTermFrequencies(reader, 0);
-        Map<String, Integer> f2 = getTermFrequencies(reader, 1);
-        reader.close();
-        v1 = toRealVector(f1);
-        v2 = toRealVector(f2);
+        if(s1!=""&& s1!=null && s2!=null &&s2 !="")
+        {
+            Directory directory = createIndex(s1, s2);
+            IndexReader reader = DirectoryReader.open(directory);
+            Map<String, Integer> f1 = getTermFrequencies(reader, 0);
+            Map<String, Integer> f2 = getTermFrequencies(reader, 1);
+            reader.close();
+            v1 = toRealVector(f1);
+            v2 = toRealVector(f2);
+        }
+        else
+        {
+            v1=null;
+            v2=null;
+                    
+        }
     }
 
     Directory createIndex(String s1, String s2) throws IOException {
@@ -69,7 +78,10 @@ public class CosineDocumentSimilarity {
     }
 
     double getCosineSimilarity() {
+        if(v1!=null && v2!=null)
         return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        else
+            return 0;
     }
 
     public static double getCosineSimilarity(String s1, String s2)

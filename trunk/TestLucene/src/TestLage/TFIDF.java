@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +59,7 @@ public class TFIDF {
                    // float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                     float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                     currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                 //   System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
+                    System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
                     similarityHM.put(currentAuthorID, simValue);
                 }
             }
@@ -78,26 +79,26 @@ public class TFIDF {
             similarityUsingTFIDF.indexAllDocument(_InstancePublicationHM);
            // similarityUsingTF.indexAllDocument(_InstancePublicationHM);
 
-//            Runtime runtime = Runtime.getRuntime();
-//            int numOfProcessors = runtime.availableProcessors();
-//            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+            Runtime runtime = Runtime.getRuntime();
+            int numOfProcessors = runtime.availableProcessors();
+            ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 1);
+            for (final int authorId : listAuthorID) {
+                executor.submit(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Run(authorId);
+                    }
+                });
+            }
+
 //            for (final int authorId : listAuthorID) {
-//                executor.submit(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        Run(authorId);
-//                    }
-//                });
+//                Run(authorId);
 //            }
 
-            for (final int authorId : listAuthorID) {
-                Run(authorId);
+            executor.shutdown();
+            while (!executor.isTerminated()) {
             }
-//
-//            executor.shutdown();
-//            while (!executor.isTerminated()) {
-//            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -108,11 +109,29 @@ public class TFIDF {
     }
 
     private int getInstanceFromAuthorID(int authorID) {
-        return _AuthorInstanceHM.get(authorID);
+        Iterator it = _AuthorInstanceHM.entrySet().iterator();
+        while (it.hasNext())
+        {
+           Map.Entry pairs = (Map.Entry)it.next();
+           if(pairs.getKey()==authorID)
+               return (int) pairs.getValue();
+           it.remove();
+        }
+        return 0;
     }
 
     private int getAuthorIDFromInstanceID(int instanceID) {
-        return _InstanceAuthorHM.get(instanceID);
+        //return _InstanceAuthorHM.get(instanceID);
+         Iterator it = _InstanceAuthorHM.entrySet().iterator();
+        while (it.hasNext())
+        {
+           Map.Entry pairs = (Map.Entry)it.next();
+           if(pairs.getKey()==instanceID)
+               return (int) pairs.getValue();
+           it.remove();
+        }
+        return 0;
+        
     }
 
     private void loadMappingInstanceIDAuthorID(String mapFile) {
