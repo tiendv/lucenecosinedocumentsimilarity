@@ -21,6 +21,7 @@ import org.apache.lucene.store.*;
 import org.apache.lucene.util.*;
 import org.apache.lucene.search.DocIdSetIterator;
 
+
 public class DocumentSimilarityTFIDF {
 
 //    public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class DocumentSimilarityTFIDF {
     public static final String CONTENT = "Content";
     public static final int N = 2;//Total number of documents
     Directory _directory;
+    private Object lock = new Object();
 
     private final Set<String> terms = new HashSet<>();
     private  RealVector v1;
@@ -175,16 +177,17 @@ public class DocumentSimilarityTFIDF {
         RealVector vector = new ArrayRealVector(terms.size());
         int i = 0;
         double value = 0;
-        for (String term : terms) {
-
-            if ( map.containsKey(term) ) {
-                value = map.get(term);
-            }
-            else {
-                value = 0;
-            }
-            vector.setEntry(i++, value);   
-        }
+         synchronized(lock) {
+            
+             for (String term : terms) {
+                 if (map.containsKey(term)) {
+                     value = map.get(term);
+                 } else {
+                     value = 0;
+                 }
+                 vector.setEntry(i++, value);
+             }
+         }
         return vector;
     }
 
