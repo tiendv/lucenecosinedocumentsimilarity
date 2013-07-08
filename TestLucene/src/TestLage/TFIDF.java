@@ -189,7 +189,7 @@ public class TFIDF {
         ListAuthor.add(10);
 
         TFIDF test = new TFIDF();
-        test.process("C:\\Data\\AuthorPaper.txt", ListAuthor);
+        test.process(".//Data//AuthorPaper.txt", ListAuthor);
 
     }
 }
