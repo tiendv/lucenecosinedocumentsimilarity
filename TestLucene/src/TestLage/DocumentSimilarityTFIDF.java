@@ -89,10 +89,10 @@ public class DocumentSimilarityTFIDF {
 
     double getCosineSimilarity() {
         double dotProduct = v1.dotProduct(v2);
-//        System.out.println( "Dot: " + dotProduct);
-//        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
+        System.out.println( "Dot: " + dotProduct);
+        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
         double normalization = (v1.getNorm() * v2.getNorm());
-//        System.out.println( "Norm: " + normalization);
+        System.out.println( "Norm: " + normalization);
         return dotProduct / normalization;
     }
      public double getCosineSimilarityWhenIndexAllDocument( int authorOneID, int authorTwoID) throws IOException {
@@ -101,14 +101,14 @@ public class DocumentSimilarityTFIDF {
         Map<String, Double> f2 = getWieghts(reader, authorTwoID);
         reader.close();
         v1 = toRealVector(f1);
-     //   System.out.println( "V1: " +v1 );
+        System.out.println( "V1: " +v1 );
         v2 = toRealVector(f2);
-      //  System.out.println( "V2: " +v2 );
+        System.out.println( "V2: " +v2 );
         double dotProduct = v1.dotProduct(v2);
-//        System.out.println( "Dot: " + dotProduct);
-//        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
+        System.out.println( "Dot: " + dotProduct);
+        System.out.println( "V1_norm: " + v1.getNorm() + ", V2_norm: " + v2.getNorm() );
         double normalization = (v1.getNorm() * v2.getNorm());
-//        System.out.println( "Norm: " + normalization);
+        System.out.println( "Norm: " + normalization);
         return dotProduct / normalization;
     }
     
@@ -159,17 +159,17 @@ public class DocumentSimilarityTFIDF {
             double idf = ( 1 + Math.log(N) - Math.log(df) );
             double w = tf * idf;
             tf_Idf_Weights.put(term, w);
-           // System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
+            System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
         }
-//
-//        System.out.println( "Printing docFrequencies:" );
-//        printMap(docFrequencies);
-//
-//        System.out.println( "Printing termFrequencies:" );
-//        printMap(termFrequencies);
-//
-//        System.out.println( "Printing if/idf weights:" );
-//        printMapDouble(tf_Idf_Weights);
+
+        System.out.println( "Printing docFrequencies:" );
+        printMap(docFrequencies);
+
+        System.out.println( "Printing termFrequencies:" );
+        printMap(termFrequencies);
+
+        System.out.println( "Printing if/idf weights:" );
+        printMapDouble(tf_Idf_Weights);
         return tf_Idf_Weights;
     }
 
