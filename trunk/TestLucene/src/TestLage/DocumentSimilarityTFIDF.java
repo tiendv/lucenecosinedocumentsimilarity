@@ -159,8 +159,11 @@ public class DocumentSimilarityTFIDF {
         for ( String term : docFrequencies.keySet() ) {
             int tf = termFrequencies.get(term);
             int df = docFrequencies.get(term);
-            double idf = (Math.log(N)- Math.log(df));
-            double w = (1+ (Math.log( tf))) * idf;
+            
+            double idf = ( 1 + Math.log(N) - Math.log(df) );
+            double w = tf * idf;
+//            double idf = (Math.log(N)- Math.log(df));
+//            double w = (1+ (Math.log( tf))) * idf;
             tf_Idf_Weights.put(term, w);
             System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
         }
