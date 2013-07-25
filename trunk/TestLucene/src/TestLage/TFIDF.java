@@ -49,16 +49,17 @@ public class TFIDF {
     private void Run(int inputAuthorID) {
         try {
             int currentAuthorID;
-            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
+           // System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
             int instanceID = getInstanceFromAuthorID(inputAuthorID);
             HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
             synchronized (lock) {
                 for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
                     if (instanceID != otherInstanceID) {
                         // float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
-                        float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                         currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-                        System.out.println("AuthorID: " + instanceID + " AuthorID : " + otherInstanceID + "Value:" + simValue);
+                        System.out.println("Doc: " + instanceID + " Doc : " + otherInstanceID );
+                        float simValue = (float) similarityUsingTFIDF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
+                        
                         similarityHM.put(currentAuthorID, simValue);
                     }
                 }
