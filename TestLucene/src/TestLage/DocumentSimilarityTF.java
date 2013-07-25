@@ -25,40 +25,11 @@ public class DocumentSimilarityTF {
     public static final String CONTENT = "Content";
     public static Directory _directory;
     private final Set<String> terms = new HashSet<>();
-    private static RealVector v1;
-    private static RealVector v2;
     private Object lock = new Object();
 
     public DocumentSimilarityTF() {
     }
-
-    DocumentSimilarityTF(String s1, String s2) throws IOException {
-        if (s1 != "" && s1 != null && s2 != null && s2 != "") {
-            Directory directory = createIndex(s1, s2);
-            IndexReader reader = DirectoryReader.open(directory);
-            Map<String, Integer> f1 = getTermFrequencies(reader, 0);
-            Map<String, Integer> f2 = getTermFrequencies(reader, 1);
-            reader.close();
-            v1 = toRealVector(f1);
-            v2 = toRealVector(f2);
-        } else {
-            v1 = null;
-            v2 = null;
-
-        }
-    }
-
-    DocumentSimilarityTF(int authorIDOne, int authorIDTwo) throws IOException {
-
-        //Directory directory = createIndex(s1, s2);
-        IndexReader reader = DirectoryReader.open(_directory);
-        Map<String, Integer> f1 = getTermFrequencies(reader, authorIDOne);
-        Map<String, Integer> f2 = getTermFrequencies(reader, authorIDTwo);
-        reader.close();
-        v1 = toRealVector(f1);
-        v2 = toRealVector(f2);
-    }
-
+    
     public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
         _directory = new RAMDirectory();
         Analyzer analyzer = new SimpleAnalyzer(Version.LUCENE_CURRENT);
@@ -107,34 +78,23 @@ public class DocumentSimilarityTF {
         writer.addDocument(doc);
     }
 
-    double getCosineSimilarity() {
-        if (v1 != null && v2 != null) {
-            return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
-        } else {
-            return 0;
-        }
-    }
-
     public double getCosineSimilarityWhenIndexAllDocument(int authorIDOne, int authorIDTwo)
             throws IOException {
         IndexReader reader = DirectoryReader.open(_directory);
         Map<String, Integer> f1 = getTermFrequencies(reader, authorIDOne);
         Map<String, Integer> f2 = getTermFrequencies(reader, authorIDTwo);
         reader.close();
-        v1 = toRealVector(f1);
-        v2 = toRealVector(f2);
-         v1 = toRealVector(f1);
-        System.out.println( "V1: " +v1 );
-        v2 = toRealVector(f2);
-        System.out.println( "V2: " +v2 );
-        System.out.println( "Similarity: " +getCosineSimilarity() );
-        return getCosineSimilarity();
-        
-    }
-
-    public static double getCosineSimilarity(String s1, String s2)
-            throws IOException {
-        return new DocumentSimilarityTF(s1, s2).getCosineSimilarity();
+        RealVector v1 = toRealVector(f1);
+        System.out.println("V1"+ v1);
+        RealVector v2 = toRealVector(f2);
+        terms.clear();
+        System.out.println("V2"+ v2);
+        if (v1 != null && v2 != null) {
+            System.out.println( "Similarity: "+ (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm()));
+            return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        } else {
+            return 0;
+        }        
     }
 
     Map<String, Integer> getTermFrequencies(IndexReader reader, int docId)
