@@ -27,6 +27,7 @@ public class DocumentSimilarityTF {
     private final Set<String> terms = new HashSet<>();
     private static RealVector v1;
     private static RealVector v2;
+    private Object lock = new Object();
 
     public DocumentSimilarityTF() {
     }
@@ -122,7 +123,13 @@ public class DocumentSimilarityTF {
         reader.close();
         v1 = toRealVector(f1);
         v2 = toRealVector(f2);
+         v1 = toRealVector(f1);
+        System.out.println( "V1: " +v1 );
+        v2 = toRealVector(f2);
+        System.out.println( "V2: " +v2 );
+        System.out.println( "Similarity: " +getCosineSimilarity() );
         return getCosineSimilarity();
+        
     }
 
     public static double getCosineSimilarity(String s1, String s2)
@@ -149,9 +156,11 @@ public class DocumentSimilarityTF {
     RealVector toRealVector(Map<String, Integer> map) {
         RealVector vector = new ArrayRealVector(terms.size());
         int i = 0;
-        for (String term : terms) {
-            int value = map.containsKey(term) ? map.get(term) : 0;
-            vector.setEntry(i++,value);
+        synchronized (lock) {
+            for (String term : terms) {
+                int value = map.containsKey(term) ? map.get(term) : 0;
+                vector.setEntry(i++, value);
+            }
         }
         return (RealVector) vector.mapDivide(vector.getL1Norm());
     }
