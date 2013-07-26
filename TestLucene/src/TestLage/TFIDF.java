@@ -23,29 +23,6 @@ public class TFIDF {
     DocumentSimilarityTFIDF similarityUsingTFIDF;
     private Object lock = new Object();
 
-//    private void Run(int inputAuthorID) {
-//        try {
-//            int currentAuthorID;
-//            System.out.println("CURRENT INSTANCE IS:" + inputAuthorID);
-//            int instanceID = getInstanceFromAuthorID(inputAuthorID);
-//
-//            HashMap<Integer, Float> similarityHM = new HashMap<Integer, Float>();
-//            for (int otherInstanceID = 0; otherInstanceID < _InstancePublicationHM.size(); otherInstanceID++) {
-//                if (instanceID != otherInstanceID) {
-//                    // calculate  similarity using TF only
-//                    DocumentSimilarityTF similarityUsingTF = new DocumentSimilarityTF(
-//                            _InstancePublicationHM.get(instanceID), _InstancePublicationHM.get(otherInstanceID));
-//                    float simValue = (float) similarityUsingTF.getCosineSimilarity();
-//                    currentAuthorID = getAuthorIDFromInstanceID(otherInstanceID);
-//                    similarityHM.put(currentAuthorID, simValue);
-//                }
-//            }
-//
-//            _tfidfHM.put(inputAuthorID, similarityHM);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
     private void Run(int inputAuthorID) {
         try {
             int currentAuthorID;
@@ -84,22 +61,18 @@ public class TFIDF {
             int numOfProcessors = runtime.availableProcessors();
             ExecutorService executor = Executors.newFixedThreadPool(numOfProcessors - 2);
             for (final int authorId : listAuthorID) {
-                executor.submit(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Run(authorId);
-                    }
-                });
+//                executor.submit(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        Run(authorId);
+//                    }
+//                });
+                 Run(authorId);
             }
-
-//            for (final int authorId : listAuthorID) {
-//                Run(authorId);
+//            executor.shutdown();
+//            while (!executor.isTerminated()) {
 //            }
-
-            executor.shutdown();
-            while (!executor.isTerminated()) {
-            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -187,7 +160,6 @@ public class TFIDF {
     public static void main(String[] args) {
         ArrayList<Integer> ListAuthor = new ArrayList<Integer>();
         ListAuthor.add(1);
-        ListAuthor.add(10);
 
         TFIDF test = new TFIDF();
         test.process(".//Data//AuthorPaper.txt", ListAuthor);
