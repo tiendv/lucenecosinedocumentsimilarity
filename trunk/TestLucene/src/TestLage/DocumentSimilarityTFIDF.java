@@ -118,8 +118,8 @@ public class DocumentSimilarityTFIDF {
             
            // Code cua Tien 
             
-//           double idf = (1 + Math.log(N) - Math.log(df));
-//           double w = tf * idf;
+           double idf = 1+ ( Math.log(N) - Math.log(df));
+           double w = tf * idf;
             
            // code theo cong thuc của prof
             
@@ -127,25 +127,20 @@ public class DocumentSimilarityTFIDF {
 //            double temp =1;
 //            if(tf!=0)
 //                temp =  (1+ (Math.log( tf)));
-//            double w = temp * idf;
-            
-            // Code moi dung theo cong thuc
-            
-            double idf = (Math.log(N) - Math.log(df));
-            double w = tf * idf;
-            
+//            double w = temp * idf;         
+                   
             tf_Idf_Weights.put(term, w);
             System.out.printf("Term: %s - tf: %d, df: %d, idf: %f, w: %f\n", term, tf, df, idf, w);
         }
 
-        System.out.println( "Printing docFrequencies:" );
-        printMap(docFrequencies);
+       // System.out.println( "Printing docFrequencies:" );
+     //   printMap(docFrequencies);
 
-        System.out.println( "Printing termFrequencies:" );
-        printMap(termFrequencies);
+     //   System.out.println( "Printing termFrequencies:" );
+     //   printMap(termFrequencies);
 
-        System.out.println( "Printing if/idf weights:" );
-             printMapDouble(tf_Idf_Weights);
+     //   System.out.println( "Printing if/idf weights:" );
+     //        printMapDouble(tf_Idf_Weights);
         return tf_Idf_Weights;
     }
 
