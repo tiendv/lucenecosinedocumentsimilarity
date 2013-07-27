@@ -32,10 +32,10 @@ public class SimilarityTF {
         Map<String, Integer> f1 = getTermFrequencies(author1);
         Map<String, Integer> f2 = getTermFrequencies(author2);
         RealVector v1 = toRealVector(f1);
-        System.out.println("V1"+ v1);
+      //  System.out.println("V1"+ v1);
         RealVector v2 = toRealVector(f2);
         terms.clear();
-        System.out.println("V2"+ v2);
+      //  System.out.println("V2"+ v2);
         if (v1 != null && v2 != null) {
             //System.out.println( "Similarity: "+ (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm()));
             return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
