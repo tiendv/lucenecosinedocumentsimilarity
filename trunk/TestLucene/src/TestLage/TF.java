@@ -158,7 +158,7 @@ public class TF {
         ListAuthor.add(10);
 
         TF test = new TF();
-        test.process(".//Data1//AuthorPaper.txt", ListAuthor);
+        test.process(".//Data//AuthorPaper.txt", ListAuthor);
 
     }
 }
