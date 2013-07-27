@@ -35,6 +35,7 @@ public class OldTF {
                         System.out.println("Doc: " + instanceID + " Doc : " + otherInstanceID );
                         float simValue = (float) similarityUsingTF.getCosineSimilarityWhenIndexAllDocument(instanceID, otherInstanceID);
                         similarityHM.put(currentAuthorID, simValue);
+                        System.out.println("Value: "+simValue);
                     }
                 }
             }
@@ -152,7 +153,7 @@ public class OldTF {
         ListAuthor.add(1);
         ListAuthor.add(10);
 
-        TF test = new TF();
+        OldTF test = new OldTF();
         test.process(".//Data//AuthorPaper.txt", ListAuthor);
 
     }
