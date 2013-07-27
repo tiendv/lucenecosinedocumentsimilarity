@@ -30,6 +30,33 @@ public class DocumentSimilarityTF {
     public DocumentSimilarityTF() {
     }
     
+     public double getSimilarityTFNonIndexALL(String s1, String s2) throws IOException {
+        RealVector v1;
+        RealVector v2;
+        if(s1!=""&& s1!=null && s2!=null &&s2 !="")
+        {
+            Directory directory = createIndex(s1, s2);
+            IndexReader reader = DirectoryReader.open(directory);
+            Map<String, Integer> f1 = getTermFrequencies(reader, 0);
+            Map<String, Integer> f2 = getTermFrequencies(reader, 1);
+            reader.close();
+            v1 = toRealVector(f1);
+            v2 = toRealVector(f2);
+        }
+        else
+        {
+            v1=null;
+            v2=null;
+                   
+        }
+        terms.clear();
+        if(v1!=null && v2!=null)
+        return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
+        else
+            return 0;
+    }
+     
+
     public void indexAllDocument(HashMap<Integer, String> allDocument) throws IOException {
         _directory = new RAMDirectory();
         Analyzer analyzer = new SimpleAnalyzer(Version.LUCENE_CURRENT);
@@ -85,12 +112,12 @@ public class DocumentSimilarityTF {
         Map<String, Integer> f2 = getTermFrequencies(reader, authorIDTwo);
         reader.close();
         RealVector v1 = toRealVector(f1);
-        System.out.println("V1"+ v1);
+        //System.out.println("V1"+ v1);
         RealVector v2 = toRealVector(f2);
         terms.clear();
-        System.out.println("V2"+ v2);
+        //System.out.println("V2"+ v2);
         if (v1 != null && v2 != null) {
-            System.out.println( "Similarity: "+ (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm()));
+            //System.out.println( "Similarity: "+ (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm()));
             return (v1.dotProduct(v2)) / (v1.getNorm() * v2.getNorm());
         } else {
             return 0;
@@ -116,12 +143,10 @@ public class DocumentSimilarityTF {
     RealVector toRealVector(Map<String, Integer> map) {
         RealVector vector = new ArrayRealVector(terms.size());
         int i = 0;
-        synchronized (lock) {
             for (String term : terms) {
                 int value = map.containsKey(term) ? map.get(term) : 0;
                 vector.setEntry(i++, value);
             }
-        }
         return (RealVector) vector.mapDivide(vector.getL1Norm());
     }
 }

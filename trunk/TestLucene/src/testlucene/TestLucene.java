@@ -21,7 +21,7 @@ public class TestLucene {
      */
     public static void main(String[] args) throws IOException {
  
-        CosineDocumentSimilarity test = new CosineDocumentSimilarity("you will know the truth and the truth will make you free", "the truth will set you free but first it will piss you off");
+        CosineDocumentSimilarity test = new CosineDocumentSimilarity("cat dog dog mouse", "cat dog monkey");
         System.out.println(test.getCosineSimilarity());
         
     }
