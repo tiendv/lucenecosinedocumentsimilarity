@@ -125,7 +125,6 @@ public final class CosineDocumentSimilarity {
         int i = 0;
         double value = 0;
         for (String term : terms) {
-            System.out.println(term);
             if ( map.containsKey(term) ) {
                 value = map.get(term);
             }
